@@ -6,12 +6,14 @@ function Sidebar({ img, title, author, genres }) {
       <p className="font-semibold">{title}</p>
       <p className="italic">by {author}</p>
       <hr className="my-4" />
-      <p className="text-sm font-semibold">
-        Géneros:{" "}
-        {genres.map((genre) => (
-          <span className="italic font-light">{genre}, </span>
-        ))}
-      </p>
+      {genres && (
+        <p className="text-sm font-semibold">
+          Géneros:{" "}
+          {genres.map((genre) => (
+            <span className="italic font-light">{genre}, </span>
+          ))}
+        </p>
+      )}
     </div>
   );
 }

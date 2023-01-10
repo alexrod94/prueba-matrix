@@ -48,7 +48,7 @@ export default function Podcast() {
             <div className="grid grid-cols-6 gap-x-3">
               <p className="col-span-4 font-semibold ">Title</p>
               <p className="font-semibold">Date</p>
-              <p className="font-semibold">Duration</p>
+              <p className="font-semibold text-center">Duration</p>
               <hr className="col-span-6 my-4" />
             </div>
             {feed.map((item) => (
