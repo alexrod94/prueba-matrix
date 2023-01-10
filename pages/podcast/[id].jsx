@@ -4,13 +4,14 @@ import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
 import Parser from "rss-parser";
 import FeedItem from "../../components/FeedItem";
+import Link from "next/link";
 
 export default function Podcast() {
   const router = useRouter();
   const { id } = router.query;
   const [podcast, setPodcast] = useState({});
   const [feed, setFeed] = useState([]);
-  let parser = new Parser();
+  const parser = new Parser();
 
   useEffect(() => {
     getPodcast();
@@ -52,11 +53,13 @@ export default function Podcast() {
               <hr className="col-span-6 my-4" />
             </div>
             {feed.map((item) => (
-              <FeedItem
-                title={item.title}
-                duration={item.itunes.duration}
-                date={new Date(item.isoDate).toLocaleDateString()}
-              ></FeedItem>
+              <Link href={`/podcast/${id}/episode/${item.guid}`}>
+                <FeedItem
+                  title={item.title}
+                  duration={item.itunes.duration}
+                  date={new Date(item.isoDate).toLocaleDateString()}
+                ></FeedItem>
+              </Link>
             ))}{" "}
           </div>
         </div>
