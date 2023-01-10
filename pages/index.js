@@ -5,10 +5,24 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     getPodcasts();
   }, []);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const filteredPodcasts = podcasts.filter((podcast) => {
+    return (
+      podcast.title.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      podcast["im:artist"].label
+        .toLowerCase()
+        .includes(inputValue.toLowerCase())
+    );
+  });
 
   const getPodcasts = async () => {
     const res = await fetch(
@@ -29,8 +43,20 @@ export default function Home() {
       </Head>
       <Header />
       <div className="container w-5/6 mx-auto mb-8">
+        <div className="flex justify-end items-center mb-6">
+          <span className="bg-blue-500 px-1 text-white font-semibold text-sm rounded mr-4">
+            {filteredPodcasts.length}
+          </span>
+          <input
+            className="border border-gray-300 p-1 rounded"
+            placeholder="Filter podcasts..."
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+        </div>
         <div className="grid grid-cols-4 gap-x-4 gap-y-24">
-          {podcasts.map((podcast) => (
+          {filteredPodcasts.map((podcast) => (
             <PodcastCard
               key={podcast.id.attributes["im:id"]}
               id={podcast.id.attributes["im:id"]}
