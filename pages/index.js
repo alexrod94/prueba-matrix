@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "../components/Header";
+import PodcastCard from "../components/PodcastCard";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -27,10 +28,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <h2>Hola mundo</h2>
-      {podcasts.map((podcast) => (
-        <p key={podcast.id.attributes["im:id"]}>{podcast.title.label}</p>
-      ))}
+      <div className="container w-5/6 mx-auto mb-8">
+        <div className="grid grid-cols-4 gap-x-4 gap-y-24">
+          {podcasts.map((podcast) => (
+            <PodcastCard
+              key={podcast.id.attributes["im:id"]}
+              id={podcast.id.attributes["im:id"]}
+              title={podcast.title.label}
+              img={podcast["im:image"][2].label}
+              author={podcast["im:artist"].label}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
