@@ -11,6 +11,14 @@ export default function Home() {
     getPodcasts();
   }, []);
 
+  const getPodcasts = async () => {
+    const res = await fetch(
+      "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json"
+    );
+    const finalRes = await res.json();
+    setPodcasts(finalRes.feed.entry);
+  };
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -23,15 +31,6 @@ export default function Home() {
         .includes(inputValue.toLowerCase())
     );
   });
-
-  const getPodcasts = async () => {
-    const res = await fetch(
-      "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json"
-    );
-    const finalRes = await res.json();
-    setPodcasts(finalRes.feed.entry);
-    console.log(finalRes.feed.entry);
-  };
 
   return (
     <>
@@ -55,17 +54,21 @@ export default function Home() {
             onChange={handleInputChange}
           />
         </div>
-        <div className="grid grid-cols-4 gap-x-4 gap-y-24">
-          {filteredPodcasts.map((podcast) => (
-            <PodcastCard
-              key={podcast.id.attributes["im:id"]}
-              id={podcast.id.attributes["im:id"]}
-              title={podcast.title.label}
-              img={podcast["im:image"][2].label}
-              author={podcast["im:artist"].label}
-            />
-          ))}
-        </div>
+        {filteredPodcasts.length > 0 ? (
+          <div className="grid grid-cols-4 gap-x-4 gap-y-24">
+            {filteredPodcasts.map((podcast) => (
+              <PodcastCard
+                key={podcast.id.attributes["im:id"]}
+                id={podcast.id.attributes["im:id"]}
+                title={podcast.title.label}
+                img={podcast["im:image"][2].label}
+                author={podcast["im:artist"].label}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-red-500">Nothing to show</p>
+        )}
       </div>
     </>
   );
