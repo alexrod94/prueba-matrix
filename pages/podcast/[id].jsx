@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
-import { getFontOverrideCss } from "next/dist/server/font-utils";
+import Parser from "rss-parser";
 
 export default function Podcast() {
   const router = useRouter();
   const { id } = router.query;
   const [podcast, setPodcast] = useState({});
-  const [feed, setFeed] = useState(null);
+  const [feed, setFeed] = useState([]);
+  let parser = new Parser();
 
   useEffect(() => {
     getPodcast();
@@ -19,6 +20,13 @@ export default function Podcast() {
     const finalRes = await res.json();
     setPodcast(finalRes.results[0]);
     console.log(finalRes.results[0]);
+    getEpisodes(finalRes.results[0].feedUrl);
+  };
+
+  const getEpisodes = async (url) => {
+    let feed = await parser.parseURL(url);
+    console.log(feed.items[0]);
+    setFeed(feed.items);
   };
 
   return (
@@ -31,6 +39,14 @@ export default function Podcast() {
           author={podcast.artistName}
           // description={podcast.}
         />
+        <div className="flex flex-col">
+          {feed.map((item) => (
+            <>
+              <h2>{item.title}</h2>
+              <p>{item.link}</p>
+            </>
+          ))}
+        </div>
       </div>
     </>
   );
