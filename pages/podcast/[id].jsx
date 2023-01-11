@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Parser from "rss-parser";
 import FeedItem from "../../components/FeedItem";
 import Link from "next/link";
+import { Message_data } from "../../context/context";
 
 export default function Podcast() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function Podcast() {
   const [podcast, setPodcast] = useState({});
   const [feed, setFeed] = useState([]);
   const parser = new Parser();
+  const { setTitle, setDescription } = useContext(Message_data);
 
   useEffect(() => {
     getPodcast();
@@ -29,6 +31,11 @@ export default function Podcast() {
     let feed = await parser.parseURL(url);
     console.log(feed.items[0]);
     setFeed(feed.items);
+  };
+
+  const handleClick = (title, description) => {
+    setTitle(title);
+    setDescription(description);
   };
 
   return (
@@ -53,7 +60,10 @@ export default function Podcast() {
               <hr className="col-span-6 my-4" />
             </div>
             {feed.map((item) => (
-              <Link href={`/podcast/${id}/episode/${item.guid}`}>
+              <Link
+                onClick={() => handleClick(item.title, item.content)}
+                href={`/podcast/${id}/episode/${item.guid}`}
+              >
                 <FeedItem
                   title={item.title}
                   duration={item.itunes.duration}

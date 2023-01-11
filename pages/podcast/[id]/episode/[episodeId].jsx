@@ -1,15 +1,14 @@
 import { useRouter } from "next/router";
 import Header from "../../../../components/Header";
 import Sidebar from "../../../../components/Sidebar";
-import { useState, useEffect } from "react";
-import Parser from "rss-parser";
+import { useState, useEffect, useContext } from "react";
+import { Message_data } from "../../../../context/context";
 
 export default function Episode() {
   const router = useRouter();
   const { id, episodeId } = router.query;
   const [podcast, setPodcast] = useState({});
-  const [feed, setFeed] = useState([]);
-  let parser = new Parser();
+  const { title, description } = useContext(Message_data);
 
   useEffect(() => {
     getPodcast();
@@ -19,13 +18,6 @@ export default function Episode() {
     const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
     const finalRes = await res.json();
     setPodcast(finalRes.results[0]);
-    getEpisodes(finalRes.results[0].feedUrl);
-  };
-
-  const getEpisodes = async (url) => {
-    let feed = await parser.parseURL(url);
-    console.log(feed.items[0]);
-    setFeed(feed.items);
   };
 
   return (
@@ -38,7 +30,10 @@ export default function Episode() {
           author={podcast.artistName}
           genres={podcast.genres}
         />
-        <div className="flex flex-col w-3/5 p-3 rounded shadow shadow-gray-500"></div>
+        <div className="flex flex-col w-3/5 p-3 rounded shadow shadow-gray-500">
+          <h2 className="text-2xl font-semibold mb-3">{title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        </div>
       </div>
     </>
   );
