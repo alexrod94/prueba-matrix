@@ -79,7 +79,7 @@ export default function Home() {
           />
         </div>
         {filteredPodcasts.length > 0 ? (
-          <div className="grid grid-cols-4 gap-x-4 gap-y-24 mt-16">
+          <div className="grid grid-cols-4 gap-x-4 gap-y-44 mt-44">
             {filteredPodcasts.map((podcast) => (
               <PodcastCard
                 key={podcast.id.attributes["im:id"]}
