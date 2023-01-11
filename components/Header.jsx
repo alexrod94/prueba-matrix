@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { CircleLoader } from "react-spinners";
 
 function Header() {
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,14 @@ function Header() {
         <Link href="/">
           <h2 className="text-blue-500 text-xl font-semibold p-3">Podcaster</h2>
         </Link>
-        {loading && <p>Loading...</p>}
+        {loading && (
+          <CircleLoader
+            className="pr-12"
+            size={15}
+            color={"#123abc"}
+            loading={loading}
+          />
+        )}
       </div>
       <hr className="mb-8" />
     </>
