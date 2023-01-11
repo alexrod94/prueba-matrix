@@ -3,7 +3,7 @@ import Link from "next/link";
 function PodcastCard({ id, img, title, author }) {
   return (
     <Link href={`/podcast/${id}`}>
-      <div className="flex relative flex-col justify-between items-center px-3 pb-3 pt-24 h-[35vh] rounded shadow-sm shadow-gray-700">
+      <div className="flex relative flex-col justify-between items-center px-3 pb-3 pt-24 h-[30vh] rounded shadow-sm shadow-gray-700">
         <img
           src={img}
           className="w-3/5 mx-auto rounded-full absolute top-[-20%]"

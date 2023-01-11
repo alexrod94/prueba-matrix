@@ -8,8 +8,23 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    getPodcasts();
+    checkData();
   }, []);
+
+  const checkData = () => {
+    const savedData = localStorage.getItem("podcastsData");
+    if (savedData) {
+      let response = JSON.parse(savedData);
+      let now = Date.now();
+      let elapsedTime = now - response.timestamp;
+      let expirationTime = 86400;
+      if (elapsedTime > expirationTime) {
+        getPodcasts();
+      } else {
+        setPodcasts(response.data);
+      }
+    } else setPodcasts(response.data);
+  };
 
   const getPodcasts = async () => {
     const res = await fetch(
@@ -17,6 +32,15 @@ export default function Home() {
     );
     const finalRes = await res.json();
     setPodcasts(finalRes.feed.entry);
+
+    const timestamp = Date.now();
+
+    const localStorageData = {
+      data: finalRes.feed.entry,
+      timestamp: timestamp,
+    };
+
+    localStorage.setItem("podcastsData", JSON.stringify(localStorageData));
   };
 
   const handleInputChange = (event) => {
@@ -55,7 +79,7 @@ export default function Home() {
           />
         </div>
         {filteredPodcasts.length > 0 ? (
-          <div className="grid grid-cols-4 gap-x-4 gap-y-24">
+          <div className="grid grid-cols-4 gap-x-4 gap-y-24 mt-16">
             {filteredPodcasts.map((podcast) => (
               <PodcastCard
                 key={podcast.id.attributes["im:id"]}
