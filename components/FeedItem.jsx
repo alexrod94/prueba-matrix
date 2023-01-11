@@ -31,7 +31,7 @@ function FeedItem({ title, date, duration }) {
 
   return (
     <div className="grid grid-cols-6 gap-3">
-      <p className="col-span-4">{title}</p>
+      <p className="col-span-4 text-blue-500">{title}</p>
       <p>{date}</p>
       <p className="text-center">{minutes}</p>
       <hr className="col-span-6 my-4" />
