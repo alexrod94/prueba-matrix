@@ -36,7 +36,9 @@ export default function Podcast() {
   };
 
   const getPodcast = async () => {
-    const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
+    const url = `https://itunes.apple.com/lookup?id=${id}`;
+    const finalURL = encodeURIComponent(url);
+    const res = await fetch("https://api.allorigins.win/raw?url=" + finalURL);
     const finalRes = await res.json();
     setPodcast(finalRes.results[0]);
     getEpisodes(finalRes.results[0].feedUrl);
