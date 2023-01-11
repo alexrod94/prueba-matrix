@@ -23,13 +23,11 @@ export default function Podcast() {
     const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
     const finalRes = await res.json();
     setPodcast(finalRes.results[0]);
-    console.log(finalRes.results[0]);
     getEpisodes(finalRes.results[0].feedUrl);
   };
 
   const getEpisodes = async (url) => {
     let feed = await parser.parseURL(url);
-    console.log(feed.items[0]);
     setFeed(feed.items);
   };
 

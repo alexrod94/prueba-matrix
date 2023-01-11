@@ -6,7 +6,7 @@ import { Message_data } from "../../../../context/context";
 
 export default function Episode() {
   const router = useRouter();
-  const { id, episodeId } = router.query;
+  const { id } = router.query;
   const [podcast, setPodcast] = useState({});
   const { title, description } = useContext(Message_data);
 
