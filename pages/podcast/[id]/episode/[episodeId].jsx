@@ -15,9 +15,9 @@ export default function Episode() {
   }, []);
 
   const getPodcast = async () => {
-    const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
-    const finalRes = await res.json();
-    setPodcast(finalRes.results[0]);
+    const savedData = localStorage.getItem(id);
+    let podcast = JSON.parse(savedData);
+    setPodcast(podcast.data);
   };
 
   return (

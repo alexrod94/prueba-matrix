@@ -16,14 +16,38 @@ export default function Podcast() {
   const { setTitle, setDescription } = useContext(Message_data);
 
   useEffect(() => {
-    getPodcast();
+    checkData();
   }, []);
+
+  const checkData = () => {
+    const savedData = localStorage.getItem(id);
+    if (savedData) {
+      let response = JSON.parse(savedData);
+      let now = Date.now();
+      let elapsedTime = now - response.timestamp;
+      let expirationTime = 86400;
+      if (elapsedTime > expirationTime) {
+        getPodcast();
+      } else {
+        setPodcast(response.data);
+      }
+    } else getPodcast();
+  };
 
   const getPodcast = async () => {
     const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
     const finalRes = await res.json();
     setPodcast(finalRes.results[0]);
     getEpisodes(finalRes.results[0].feedUrl);
+
+    const timestamp = Date.now();
+
+    const localStorageData = {
+      data: finalRes.results[0],
+      timestamp: timestamp,
+    };
+
+    localStorage.setItem(id, JSON.stringify(localStorageData));
   };
 
   const getEpisodes = async (url) => {

@@ -23,7 +23,7 @@ export default function Home() {
       } else {
         setPodcasts(response.data);
       }
-    } else setPodcasts(response.data);
+    } else getPodcasts();
   };
 
   const getPodcasts = async () => {
