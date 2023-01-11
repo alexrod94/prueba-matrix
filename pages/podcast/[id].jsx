@@ -30,6 +30,7 @@ export default function Podcast() {
         getPodcast();
       } else {
         setPodcast(response.data);
+        getEpisodes(response.feed);
       }
     } else getPodcast();
   };
@@ -44,6 +45,7 @@ export default function Podcast() {
 
     const localStorageData = {
       data: finalRes.results[0],
+      feed: finalRes.results[0].feedUrl,
       timestamp: timestamp,
     };
 
